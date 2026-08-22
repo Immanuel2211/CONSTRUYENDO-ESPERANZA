@@ -116,16 +116,20 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        .carrusel img {
+        .carrusel img,
+        .carrusel video {
             width: 100%;
             height: 100%;
 
             object-fit: cover;
 
             display: none;
+
+            background: #000;
         }
 
-        .carrusel img.activa {
+        .carrusel img.activa,
+        .carrusel video.activa {
             display: block;
         }
 
@@ -990,57 +994,69 @@ async function obtenerImagenes(carpeta) {
     const url =
         `https://api.github.com/repos/${USUARIO_GITHUB}/${REPOSITORIO_GITHUB}/contents/${carpeta}?ref=${RAMA_GITHUB}`;
 
-
     try {
 
         const respuesta = await fetch(url);
 
-
         if (!respuesta.ok) {
-
             throw new Error(
-                "No se pudo acceder a la carpeta de imágenes."
+                "No se pudo acceder a la carpeta."
             );
-
         }
-
 
         const archivos = await respuesta.json();
 
-
         return archivos
 
-    .filter(archivo => {
+            .filter(archivo => {
 
-        if (archivo.type !== "file") {
+                if (archivo.type !== "file") {
+                    return false;
+                }
 
-            return false;
+                const nombre =
+                    archivo.name.toLowerCase();
 
-        }
+                return (
+                    extensionesImagen.some(
+                        extension =>
+                            nombre.endsWith(extension)
+                    )
+                    ||
+                    extensionesVideo.some(
+                        extension =>
+                            nombre.endsWith(extension)
+                    )
+                );
 
-        const nombre =
-            archivo.name.toLowerCase();
+            })
 
-        return extensionesImagen.some(
-            extension =>
-                nombre.endsWith(extension)
-        );
+            .sort((a, b) =>
+                a.name.localeCompare(
+                    b.name,
+                    undefined,
+                    {
+                        numeric: true,
+                        sensitivity: "base"
+                    }
+                )
+            )
 
-    })
+            .map(archivo => {
 
-    // Ordenar las imágenes de menor a mayor
-    .sort((a, b) =>
-        a.name.localeCompare(
-            b.name,
-            undefined,
-            {
-                numeric: true,
-                sensitivity: "base"
-            }
-        )
-    )
+                return {
+                    nombre: archivo.name,
+                    url: archivo.download_url,
+                    esVideo:
+                        extensionesVideo.some(
+                            extension =>
+                                archivo.name
+                                    .toLowerCase()
+                                    .endsWith(extension)
+                        )
+                };
 
-    .map(archivo => archivo.download_url);
+            });
 
     } catch (error) {
 
@@ -1085,7 +1101,6 @@ function mostrarCarrusel(tipo) {
     const carrusel =
         carruseles[tipo];
 
-
     const elemento =
         document.getElementById(
             tipo === "actual"
@@ -1094,14 +1109,15 @@ function mostrarCarrusel(tipo) {
         );
 
 
-    /*
-        Eliminamos solamente las imágenes
-        que haya generado JavaScript.
-    */
+    // Eliminar imágenes y videos anteriores
 
     elemento
-        .querySelectorAll(".imagen-github")
-        .forEach(imagen => imagen.remove());
+        .querySelectorAll(
+            ".archivo-github"
+        )
+        .forEach(
+            archivo => archivo.remove()
+        );
 
 
     const mensaje =
@@ -1110,12 +1126,14 @@ function mostrarCarrusel(tipo) {
         );
 
 
+    // Si no existen archivos
+
     if (carrusel.imagenes.length === 0) {
 
         mensaje.style.display = "flex";
 
         mensaje.innerHTML =
-            "Todavía no hay imágenes en esta carpeta.";
+            "Todavía no hay imágenes o videos en esta carpeta.";
 
         return;
 
@@ -1125,50 +1143,83 @@ function mostrarCarrusel(tipo) {
     mensaje.style.display = "none";
 
 
+    // Crear cada archivo
+
     carrusel.imagenes.forEach(
-        (url, indice) => {
-
-            const imagen =
-                document.createElement("img");
+        (archivo, indice) => {
 
 
-            imagen.src = url;
-
-            imagen.className =
-                "imagen-github";
+            let elementoMedia;
 
 
-            imagen.alt =
-                tipo === "actual"
-                    ? "Proyecto actual"
-                    : "Proyecto finalizado";
+            // =========================
+            // SI ES VIDEO
+            // =========================
 
+            if (archivo.esVideo) {
+
+                elementoMedia =
+                    document.createElement("video");
+
+                elementoMedia.src =
+                    archivo.url;
+
+                elementoMedia.controls = true;
+
+                elementoMedia.playsInline = true;
+
+                elementoMedia.preload = "metadata";
+
+            }
+
+
+            // =========================
+            // SI ES IMAGEN
+            // =========================
+
+            else {
+
+                elementoMedia =
+                    document.createElement("img");
+
+                elementoMedia.src =
+                    archivo.url;
+
+                elementoMedia.alt =
+                    archivo.nombre;
+
+            }
+
+
+            elementoMedia.classList.add(
+                "archivo-github"
+            );
+
+
+            // Mostrar solamente
+            // la imagen/video actual
 
             if (
                 indice ===
                 carrusel.posicion
             ) {
 
-                imagen.classList.add(
+                elementoMedia.classList.add(
                     "activa"
                 );
 
             }
 
 
-            /*
-                Insertamos la imagen
-                antes de las flechas.
-            */
+            // Insertar antes de las flechas
 
             const flecha =
                 elemento.querySelector(
                     ".anterior"
                 );
 
-
             elemento.insertBefore(
-                imagen,
+                elementoMedia,
                 flecha
             );
 
