@@ -1005,28 +1005,37 @@ async function obtenerImagenes(carpeta) {
 
         return archivos
 
-            .filter(archivo => {
+    .filter(archivo => {
 
-                if (archivo.type !== "file") {
+        if (archivo.type !== "file") {
 
-                    return false;
+            return false;
 
-                }
+        }
 
+        const nombre =
+            archivo.name.toLowerCase();
 
-                const nombre =
-                    archivo.name.toLowerCase();
+        return extensionesImagen.some(
+            extension =>
+                nombre.endsWith(extension)
+        );
 
+    })
 
-                return extensionesImagen.some(
-                    extension =>
-                        nombre.endsWith(extension)
-                );
+    // Ordenar las imágenes de menor a mayor
+    .sort((a, b) =>
+        a.name.localeCompare(
+            b.name,
+            undefined,
+            {
+                numeric: true,
+                sensitivity: "base"
+            }
+        )
+    )
 
-            })
-
-            .map(archivo => archivo.download_url);
-
+    .map(archivo => archivo.download_url);
 
     } catch (error) {
 
