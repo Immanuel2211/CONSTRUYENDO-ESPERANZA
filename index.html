@@ -7,162 +7,125 @@
     <title>CONSTRUYENDO ESPERANZA</title>
 
     <style>
-
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         body {
-            min-height: 100vh;
-            font-family: Arial, sans-serif;
-            background: #F5F5DC;
-            color: #722F37;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f5f5;
+            color: #333;
         }
 
         /* =========================
            ENCABEZADO
-        ========================= */
+        ========================== */
 
         header {
             width: 100%;
-            height: 110px;
-            padding: 15px 5%;
+            min-height: 150px;
+            background: white;
 
             display: flex;
             align-items: center;
             justify-content: space-between;
 
-            background: #F5F5DC;
-            border-bottom: 3px solid #722F37;
-        }
+            padding: 25px 50px;
 
-        /* LOGO */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+        }
 
         .logo {
-            width: 80px;
-            height: 80px;
+            width: 130px;
+            height: 100px;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border: 2px solid #722F37;
-            border-radius: 10px;
-
-            overflow: hidden;
-        }
-
-        .logo img {
-            width: 100%;
-            height: 100%;
             object-fit: contain;
+
+            background: #eeeeee;
+            border-radius: 10px;
         }
 
-        /* NOMBRE */
-
-        .nombre-fundacion {
-            font-size: 32px;
-            font-weight: bold;
-            color: #722F37;
+        .titulo {
             text-align: right;
         }
 
+        .titulo h1 {
+            font-size: 32px;
+            letter-spacing: 1px;
+            color: #333;
+        }
+
+        .titulo p {
+            margin-top: 8px;
+            font-size: 18px;
+            color: #666;
+        }
+
 
         /* =========================
-           CONTENIDO
-        ========================= */
+           CONTENIDO PRINCIPAL
+        ========================== */
 
         main {
-            width: 100%;
-            min-height: calc(100vh - 110px);
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            padding: 50px 5%;
-        }
-
-
-        .proyectos {
-            width: 100%;
+            width: 90%;
             max-width: 1200px;
 
+            margin: 50px auto;
+        }
+
+        .proyectos {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 50px;
+            gap: 35px;
         }
 
-
-        /* =========================
-           TITULOS
-        ========================= */
+        .proyecto {
+            text-align: center;
+        }
 
         .proyecto h2 {
-            text-align: center;
-            color: #722F37;
-
-            font-size: 26px;
-
-            margin-bottom: 18px;
+            margin-bottom: 15px;
+            font-size: 25px;
         }
-
 
         /* =========================
            CARRUSEL
-        ========================= */
+        ========================== */
 
         .carrusel {
             position: relative;
 
             width: 100%;
-            height: 430px;
-
-            background: white;
-
-            border: 4px solid #722F37;
-            border-radius: 15px;
+            height: 350px;
 
             overflow: hidden;
 
-            box-shadow: 0 8px 20px rgba(114, 47, 55, 0.20);
+            background: white;
+
+            border-radius: 15px;
+
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-
-        .slide {
-            display: none;
-
-            width: 100%;
-            height: 100%;
-        }
-
-
-        .slide.active {
-            display: block;
-        }
-
-
-        .slide img {
+        .carrusel img {
             width: 100%;
             height: 100%;
 
             object-fit: cover;
+
+            display: none;
         }
 
+        .carrusel img.activa {
+            display: block;
+        }
 
-        /* =========================
-           BOTONES
-        ========================= */
-
-        .prev,
-        .next {
-
+        .flecha {
             position: absolute;
 
             top: 50%;
-
             transform: translateY(-50%);
 
             width: 45px;
@@ -171,433 +134,898 @@
             border: none;
             border-radius: 50%;
 
-            background: rgba(114, 47, 55, 0.85);
-
-            color: #F5F5DC;
+            background: rgba(0,0,0,0.55);
+            color: white;
 
             font-size: 25px;
 
             cursor: pointer;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            transition: 0.3s;
         }
 
+        .flecha:hover {
+            background: rgba(0,0,0,0.8);
+        }
 
-        .prev {
+        .anterior {
             left: 15px;
         }
 
-
-        .next {
+        .siguiente {
             right: 15px;
         }
 
 
-        .prev:hover,
-        .next:hover {
+        /* =========================
+           BOTONES
+        ========================== */
 
-            background: #722F37;
+        .acciones {
+            margin-top: 60px;
 
-            transform: translateY(-50%) scale(1.1);
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+
+            gap: 20px;
+        }
+
+        .boton-principal {
+            width: 300px;
+
+            padding: 18px;
+
+            border: none;
+            border-radius: 10px;
+
+            background: #333;
+            color: white;
+
+            font-size: 18px;
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        .boton-principal:hover {
+            transform: scale(1.03);
+            background: #555;
         }
 
 
         /* =========================
-           INDICADORES
-        ========================= */
+           VENTANAS
+        ========================== */
 
-        .dots {
+        .ventana {
+            display: none;
 
-            position: absolute;
+            position: fixed;
 
-            bottom: 15px;
-
+            top: 0;
             left: 0;
-            right: 0;
 
-            display: flex;
+            width: 100%;
+            height: 100%;
+
+            background: rgba(0,0,0,0.65);
 
             justify-content: center;
+            align-items: center;
 
-            gap: 8px;
+            z-index: 1000;
         }
 
+        .ventana.activa {
+            display: flex;
+        }
 
-        .dot {
+        .contenido-ventana {
+            width: 90%;
+            max-width: 500px;
 
-            width: 11px;
-            height: 11px;
+            max-height: 90vh;
+            overflow-y: auto;
 
-            border-radius: 50%;
+            background: white;
 
-            background: #F5F5DC;
+            border-radius: 15px;
 
-            border: 2px solid #722F37;
+            padding: 35px;
+
+            text-align: center;
+
+            position: relative;
+        }
+
+        .contenido-ventana h2 {
+            margin-bottom: 25px;
+        }
+
+        .cerrar {
+            position: absolute;
+
+            top: 12px;
+            right: 18px;
+
+            border: none;
+            background: none;
+
+            font-size: 30px;
 
             cursor: pointer;
         }
 
 
-        .dot.active {
-            background: #722F37;
+        /* =========================
+           BOTONES DE OPCIONES
+        ========================== */
+
+        .opcion {
+            width: 100%;
+
+            padding: 16px;
+
+            margin: 10px 0;
+
+            border: none;
+            border-radius: 8px;
+
+            background: #444;
+            color: white;
+
+            font-size: 16px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .opcion:hover {
+            background: #666;
         }
 
 
         /* =========================
-           CELULAR
-        ========================= */
+           FORMULARIOS
+        ========================== */
 
-        @media (max-width: 800px) {
-
-            header {
-                height: auto;
-
-                padding: 15px 20px;
-
-                gap: 15px;
-            }
-
-            .logo {
-                width: 65px;
-                height: 65px;
-            }
-
-            .nombre-fundacion {
-                font-size: 20px;
-            }
-
-
-            main {
-                padding: 35px 20px;
-            }
-
-
-            .proyectos {
-
-                grid-template-columns: 1fr;
-
-                gap: 45px;
-            }
-
-
-            .carrusel {
-                height: 350px;
-            }
-
-
-            .proyecto h2 {
-                font-size: 23px;
-            }
-
+        form {
+            text-align: left;
         }
 
-    </style>
+        label {
+            display: block;
 
+            margin-top: 15px;
+            margin-bottom: 6px;
+
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 7px;
+
+            font-size: 15px;
+        }
+
+        .enviar {
+            width: 100%;
+
+            margin-top: 25px;
+
+            padding: 14px;
+
+            border: none;
+            border-radius: 8px;
+
+            background: #333;
+            color: white;
+
+            font-size: 16px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .enviar:hover {
+            background: #555;
+        }
+
+
+        /* =========================
+           QR PROVISIONAL
+        ========================== */
+
+        .qr-provisional {
+            width: 250px;
+            height: 250px;
+
+            margin: 20px auto;
+
+            object-fit: cover;
+
+            border-radius: 10px;
+        }
+
+        .texto-provisional {
+            color: #777;
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media (max-width: 700px) {
+
+            header {
+                flex-direction: column;
+
+                gap: 20px;
+
+                text-align: center;
+            }
+
+            .titulo {
+                text-align: center;
+            }
+
+            .titulo h1 {
+                font-size: 25px;
+            }
+
+            .titulo p {
+                font-size: 16px;
+            }
+
+            .proyectos {
+                grid-template-columns: 1fr;
+            }
+
+            .carrusel {
+                height: 280px;
+            }
+
+            .boton-principal {
+                width: 90%;
+            }
+        }
+    </style>
 </head>
 
 
 <body>
 
 
-    <!-- =========================
-         ENCABEZADO
-    ========================== -->
+<!-- =====================================================
+     ENCABEZADO
+====================================================== -->
 
-    <header>
+<header>
+
+    <!-- LOGO PROVISIONAL -->
+    <img
+        class="logo"
+        src="https://via.placeholder.com/300x200.png?text=LOGO"
+        alt="Logo Construyendo Esperanza"
+    >
+
+    <div class="titulo">
+
+        <h1>CONSTRUYENDO ESPERANZA</h1>
+
+        <p>
+            Sirviendo con amor, construyendo futuro
+        </p>
+
+    </div>
+
+</header>
 
 
-        <!-- LOGO -->
 
-        <div class="logo">
+<!-- =====================================================
+     CONTENIDO PRINCIPAL
+====================================================== -->
 
-            <!--
-            AQUÍ COLOCAREMOS EL LOGO
-            -->
+<main>
 
-            <img
-                src="logo.png"
-                alt="Logo Construyendo Esperanza"
+    <div class="proyectos">
+
+
+        <!-- =============================================
+             PROYECTO ACTUAL
+        ============================================== -->
+
+        <section class="proyecto">
+
+            <h2>PROYECTO ACTUAL</h2>
+
+            <div class="carrusel">
+
+                <img
+                    class="actual activa"
+                    src="https://via.placeholder.com/800x500.png?text=Proyecto+Actual+1"
+                    alt="Proyecto actual"
+                >
+
+                <img
+                    class="actual"
+                    src="https://via.placeholder.com/800x500.png?text=Proyecto+Actual+2"
+                    alt="Proyecto actual"
+                >
+
+                <img
+                    class="actual"
+                    src="https://via.placeholder.com/800x500.png?text=Proyecto+Actual+3"
+                    alt="Proyecto actual"
+                >
+
+                <button
+                    class="flecha anterior"
+                    onclick="cambiarImagen('actual', -1)">
+                    ❮
+                </button>
+
+                <button
+                    class="flecha siguiente"
+                    onclick="cambiarImagen('actual', 1)">
+                    ❯
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =============================================
+             PROYECTOS FINALIZADOS
+        ============================================== -->
+
+        <section class="proyecto">
+
+            <h2>PROYECTOS FINALIZADOS</h2>
+
+            <div class="carrusel">
+
+                <img
+                    class="finalizado activa"
+                    src="https://via.placeholder.com/800x500.png?text=Proyecto+Finalizado+1"
+                    alt="Proyecto finalizado"
+                >
+
+                <img
+                    class="finalizado"
+                    src="https://via.placeholder.com/800x500.png?text=Proyecto+Finalizado+2"
+                    alt="Proyecto finalizado"
+                >
+
+                <img
+                    class="finalizado"
+                    src="https://via.placeholder.com/800x500.png?text=Proyecto+Finalizado+3"
+                    alt="Proyecto finalizado"
+                >
+
+                <button
+                    class="flecha anterior"
+                    onclick="cambiarImagen('finalizado', -1)">
+                    ❮
+                </button>
+
+                <button
+                    class="flecha siguiente"
+                    onclick="cambiarImagen('finalizado', 1)">
+                    ❯
+                </button>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+
+    <!-- =================================================
+         BOTONES FINALES
+    ================================================== -->
+
+    <div class="acciones">
+
+        <button
+            class="boton-principal"
+            onclick="abrirVentana('donar')">
+
+            QUIERO DONAR
+
+        </button>
+
+
+        <button
+            class="boton-principal"
+            onclick="abrirVentana('voluntario')">
+
+            QUIERO SER VOLUNTARIO
+
+        </button>
+
+    </div>
+
+</main>
+
+
+
+<!-- =====================================================
+     VENTANA: QUIERO DONAR
+====================================================== -->
+
+<div
+    id="donar"
+    class="ventana">
+
+    <div class="contenido-ventana">
+
+        <button
+            class="cerrar"
+            onclick="cerrarVentanas()">
+
+            ×
+
+        </button>
+
+        <h2>QUIERO DONAR</h2>
+
+
+        <button
+            class="opcion"
+            onclick="abrirVentana('alimentos')">
+
+            DONAR ALIMENTOS
+
+        </button>
+
+
+        <button
+            class="opcion"
+            onclick="abrirVentana('dinero')">
+
+            DONAR DINERO
+
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     VENTANA: DONAR ALIMENTOS
+====================================================== -->
+
+<div
+    id="alimentos"
+    class="ventana">
+
+    <div class="contenido-ventana">
+
+        <button
+            class="cerrar"
+            onclick="cerrarVentanas()">
+
+            ×
+
+        </button>
+
+        <h2>DONAR ALIMENTOS</h2>
+
+
+        <button
+            class="opcion"
+            onclick="abrirVentana('personalmente')">
+
+            ENTREGAR PERSONALMENTE
+
+        </button>
+
+
+        <button
+            class="opcion"
+            onclick="abrirVentana('recoger')">
+
+            RECOGER EN MI UBICACIÓN
+
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     VENTANA: ENTREGA PERSONAL
+====================================================== -->
+
+<div
+    id="personalmente"
+    class="ventana">
+
+    <div class="contenido-ventana">
+
+        <button
+            class="cerrar"
+            onclick="cerrarVentanas()">
+
+            ×
+
+        </button>
+
+        <h2>ENTREGAR PERSONALMENTE</h2>
+
+
+        <a
+            href="https://maps.app.goo.gl/yAj5tvAMiVgbntXS6"
+            target="_blank"
+            style="text-decoration:none;">
+
+            <button class="opcion">
+
+                LA ALIANZA PASTO<br>
+
+                Calle 10 #No.18-32,<br>
+
+                Avenida Idema, Pasto
+
+            </button>
+
+        </a>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     VENTANA: RECOGER DONATIVO
+====================================================== -->
+
+<div
+    id="recoger"
+    class="ventana">
+
+    <div class="contenido-ventana">
+
+        <button
+            class="cerrar"
+            onclick="cerrarVentanas()">
+
+            ×
+
+        </button>
+
+        <h2>RECOGER EN MI UBICACIÓN</h2>
+
+
+        <form
+            onsubmit="enviarRecogida(event)">
+
+            <label>Nombres</label>
+
+            <input
+                type="text"
+                id="nombreRecogida"
+                required
             >
 
-        </div>
 
+            <label>Fecha y hora</label>
 
-        <!-- NOMBRE -->
+            <input
+                type="datetime-local"
+                id="fechaRecogida"
+                required
+            >
 
-        <div class="nombre-fundacion">
 
-            CONSTRUYENDO ESPERANZA
+            <label>Dirección</label>
 
-        </div>
+            <input
+                type="text"
+                id="direccionRecogida"
+                required
+            >
 
 
-    </header>
+            <button
+                class="enviar"
+                type="submit">
 
+                ENVIAR SOLICITUD
 
+            </button>
 
-    <!-- =========================
-         PROYECTOS
-    ========================== -->
+        </form>
 
-    <main>
+    </div>
 
-        <div class="proyectos">
+</div>
 
 
-            <!-- =========================
-                 PROYECTO ACTUAL
-            ========================== -->
 
-            <div class="proyecto">
+<!-- =====================================================
+     VENTANA: DONAR DINERO
+====================================================== -->
 
-                <h2>
-                    PROYECTO ACTUAL
-                </h2>
+<div
+    id="dinero"
+    class="ventana">
 
+    <div class="contenido-ventana">
 
-                <div class="carrusel" id="carruselActual">
+        <button
+            class="cerrar"
+            onclick="cerrarVentanas()">
 
+            ×
 
-                    <div class="slide active">
+        </button>
 
-                        <img
-                            src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1200&q=80"
-                            alt="Proyecto actual"
-                        >
+        <h2>DONAR DINERO</h2>
 
-                    </div>
 
+        <!-- QR PROVISIONAL -->
 
-                    <div class="slide">
+        <img
+            class="qr-provisional"
+            src="https://via.placeholder.com/500x500.png?text=QR+PROVISIONAL"
+            alt="Código QR provisional"
+        >
 
-                        <img
-                            src="https://images.unsplash.com/photo-1494386346843-e12284507169?auto=format&fit=crop&w=1200&q=80"
-                            alt="Proyecto actual"
-                        >
 
-                    </div>
+        <p class="texto-provisional">
 
+            Aquí colocaremos posteriormente
+            tu código QR real.
 
-                    <div class="slide">
+        </p>
 
-                        <img
-                            src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?auto=format&fit=crop&w=1200&q=80"
-                            alt="Proyecto actual"
-                        >
+    </div>
 
-                    </div>
+</div>
 
 
-                    <button class="prev" onclick="cambiarSlide(-1, 0)">
-                        ‹
-                    </button>
 
-                    <button class="next" onclick="cambiarSlide(1, 0)">
-                        ›
-                    </button>
+<!-- =====================================================
+     VENTANA: VOLUNTARIOS
+====================================================== -->
 
+<div
+    id="voluntario"
+    class="ventana">
 
-                    <div class="dots" id="dots0"></div>
+    <div class="contenido-ventana">
 
-                </div>
+        <button
+            class="cerrar"
+            onclick="cerrarVentanas()">
 
-            </div>
+            ×
 
+        </button>
 
+        <h2>QUIERO SER VOLUNTARIO</h2>
 
-            <!-- =========================
-                 PROYECTOS FINALIZADOS
-            ========================== -->
 
-            <div class="proyecto">
+        <form
+            onsubmit="enviarVoluntario(event)">
 
-                <h2>
-                    PROYECTOS FINALIZADOS
-                </h2>
 
+            <label>Nombres</label>
 
-                <div class="carrusel" id="carruselFinalizados">
+            <input
+                type="text"
+                id="nombresVoluntario"
+                required
+            >
 
 
-                    <div class="slide active">
+            <label>Apellidos</label>
 
-                        <img
-                            src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=1200&q=80"
-                            alt="Proyecto finalizado"
-                        >
+            <input
+                type="text"
+                id="apellidosVoluntario"
+                required
+            >
 
-                    </div>
 
+            <label>Celular</label>
 
-                    <div class="slide">
+            <input
+                type="tel"
+                id="celularVoluntario"
+                required
+            >
 
-                        <img
-                            src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=1200&q=80"
-                            alt="Proyecto finalizado"
-                        >
 
-                    </div>
+            <label>Correo electrónico</label>
 
+            <input
+                type="email"
+                id="correoVoluntario"
+                required
+            >
 
-                    <div class="slide">
 
-                        <img
-                            src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?auto=format&fit=crop&w=1200&q=80"
-                            alt="Proyecto finalizado"
-                        >
+            <button
+                class="enviar"
+                type="submit">
 
-                    </div>
+                ENVIAR
 
+            </button>
 
-                    <button class="prev" onclick="cambiarSlide(-1, 1)">
-                        ‹
-                    </button>
+        </form>
 
-                    <button class="next" onclick="cambiarSlide(1, 1)">
-                        ›
-                    </button>
+    </div>
 
+</div>
 
-                    <div class="dots" id="dots1"></div>
 
-                </div>
 
-            </div>
+<script>
 
+/* =====================================================
+   CARRUSELES
+====================================================== */
 
-        </div>
+let posiciones = {
+    actual: 0,
+    finalizado: 0
+};
 
-    </main>
 
+function cambiarImagen(tipo, direccion) {
 
+    const imagenes =
+        document.querySelectorAll("." + tipo);
 
-    <!-- =========================
-         JAVASCRIPT
-    ========================== -->
+    posiciones[tipo] += direccion;
 
-    <script>
 
-        let indices = [0, 0];
+    if (posiciones[tipo] < 0) {
 
+        posiciones[tipo] =
+            imagenes.length - 1;
 
-        const carruseles = [
+    }
 
-            document.querySelector("#carruselActual"),
 
-            document.querySelector("#carruselFinalizados")
+    if (posiciones[tipo] >= imagenes.length) {
 
-        ];
+        posiciones[tipo] = 0;
 
+    }
 
-        function mostrarSlide(carruselIndex) {
 
-            const carrusel = carruseles[carruselIndex];
+    imagenes.forEach(function(imagen, indice) {
 
-            const slides = carrusel.querySelectorAll(".slide");
+        imagen.classList.remove("activa");
 
-            const dots = carrusel.querySelectorAll(".dot");
+        if (indice === posiciones[tipo]) {
 
-
-            slides.forEach(slide => {
-
-                slide.classList.remove("active");
-
-            });
-
-
-            dots.forEach(dot => {
-
-                dot.classList.remove("active");
-
-            });
-
-
-            slides[indices[carruselIndex]].classList.add("active");
-
-            dots[indices[carruselIndex]].classList.add("active");
+            imagen.classList.add("activa");
 
         }
 
+    });
 
-        function cambiarSlide(direccion, carruselIndex) {
-
-            const carrusel = carruseles[carruselIndex];
-
-            const slides = carrusel.querySelectorAll(".slide");
+}
 
 
-            indices[carruselIndex] += direccion;
+
+/* =====================================================
+   ABRIR VENTANAS
+====================================================== */
+
+function abrirVentana(id) {
+
+    cerrarVentanas();
+
+    document
+        .getElementById(id)
+        .classList.add("activa");
+
+}
 
 
-            if (indices[carruselIndex] >= slides.length) {
 
-                indices[carruselIndex] = 0;
+/* =====================================================
+   CERRAR VENTANAS
+====================================================== */
+
+function cerrarVentanas() {
+
+    document
+        .querySelectorAll(".ventana")
+        .forEach(function(ventana) {
+
+            ventana.classList.remove("activa");
+
+        });
+
+}
+
+
+
+/* =====================================================
+   FORMULARIO DE RECOGIDA
+====================================================== */
+
+function enviarRecogida(event) {
+
+    event.preventDefault();
+
+    alert(
+        "Solicitud registrada.\n\n" +
+        "Posteriormente conectaremos este formulario " +
+        "con tu sistema privado de almacenamiento."
+    );
+
+}
+
+
+
+/* =====================================================
+   FORMULARIO DE VOLUNTARIOS
+====================================================== */
+
+function enviarVoluntario(event) {
+
+    event.preventDefault();
+
+    alert(
+        "¡Gracias por querer ser voluntario!\n\n" +
+        "Posteriormente conectaremos este formulario " +
+        "con tu sistema privado de almacenamiento."
+    );
+
+}
+
+
+
+/* =====================================================
+   CERRAR AL HACER CLICK FUERA DE LA VENTANA
+====================================================== */
+
+document
+    .querySelectorAll(".ventana")
+    .forEach(function(ventana) {
+
+        ventana.addEventListener("click", function(event) {
+
+            if (event.target === ventana) {
+
+                cerrarVentanas();
 
             }
 
+        });
 
-            if (indices[carruselIndex] < 0) {
+    });
 
-                indices[carruselIndex] = slides.length - 1;
-
-            }
-
-
-            mostrarSlide(carruselIndex);
-
-        }
-
-
-        function crearDots(carruselIndex) {
-
-            const carrusel = carruseles[carruselIndex];
-
-            const slides = carrusel.querySelectorAll(".slide");
-
-            const contenedor = carrusel.querySelector(".dots");
-
-
-            slides.forEach((slide, index) => {
-
-                const dot = document.createElement("div");
-
-                dot.classList.add("dot");
-
-
-                if (index === 0) {
-
-                    dot.classList.add("active");
-
-                }
-
-
-                dot.addEventListener("click", () => {
-
-                    indices[carruselIndex] = index;
-
-                    mostrarSlide(carruselIndex);
-
-                });
-
-
-                contenedor.appendChild(dot);
-
-            });
-
-        }
-
-
-        crearDots(0);
-
-        crearDots(1);
-
-
-    </script>
-
+</script>
 
 </body>
 </html>
