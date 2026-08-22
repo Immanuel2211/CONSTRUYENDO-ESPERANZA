@@ -1171,22 +1171,18 @@ function mostrarCarrusel(tipo) {
 
 function cambiarImagen(tipo, direccion) {
 
-    const carrusel =
-        carruseles[tipo];
+    const carrusel = carruseles[tipo];
 
-
-    if (
-        carrusel.imagenes.length === 0
-    ) {
-
+    // Si no hay imágenes, no hacemos nada
+    if (carrusel.imagenes.length === 0) {
         return;
-
     }
 
-
+    // Cambiar posición
     carrusel.posicion += direccion;
 
-
+    // Si llegamos antes de la primera imagen,
+    // volvemos a la última
     if (carrusel.posicion < 0) {
 
         carrusel.posicion =
@@ -1194,7 +1190,8 @@ function cambiarImagen(tipo, direccion) {
 
     }
 
-
+    // Si llegamos después de la última,
+    // volvemos a la primera
     if (
         carrusel.posicion >=
         carrusel.imagenes.length
@@ -1204,7 +1201,7 @@ function cambiarImagen(tipo, direccion) {
 
     }
 
-
+    // Mostrar la nueva imagen
     mostrarCarrusel(tipo);
 
 }
@@ -1216,21 +1213,38 @@ function cambiarImagen(tipo, direccion) {
 ====================================================== */
 
 cargarCarrusel(
-
     "actual",
-
     "imagenes/proyecto-actual"
-
 );
-
 
 cargarCarrusel(
-
     "finalizado",
-
     "imagenes/proyectos-finalizados"
-
 );
+
+
+
+/* =====================================================
+   CAMBIO AUTOMÁTICO DE IMÁGENES
+====================================================== */
+
+/*
+   Cada 5 segundos cambia al siguiente
+   proyecto automáticamente.
+*/
+
+setInterval(function() {
+
+    cambiarImagen("actual", 1);
+
+}, 5000);
+
+
+setInterval(function() {
+
+    cambiarImagen("finalizado", 1);
+
+}, 5000);
 
 
 
