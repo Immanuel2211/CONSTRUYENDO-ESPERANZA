@@ -951,12 +951,14 @@ const carruseles = {
 
     actual: {
         imagenes: [],
-        posicion: 0
+        posicion: 0,
+        temporizador: null
     },
 
     finalizado: {
         imagenes: [],
-        posicion: 0
+        posicion: 0,
+        temporizador: null
     }
 
 };
@@ -1461,29 +1463,6 @@ cargarCarrusel(
     "imagenes/proyectos-finalizados"
 );
 
-
-
-/* =====================================================
-   CAMBIO AUTOMÁTICO DE IMÁGENES
-====================================================== */
-
-/*
-   Cada 5 segundos cambia al siguiente
-   proyecto automáticamente.
-*/
-
-setInterval(function() {
-
-    cambiarImagen("actual", 1);
-
-}, 5000);
-
-
-setInterval(function() {
-
-    cambiarImagen("finalizado", 1);
-
-}, 5000);
 
 
 
