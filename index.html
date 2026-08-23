@@ -1093,6 +1093,45 @@ async function cargarCarrusel(tipo, carpeta) {
 
 
 /* =====================================================
+   CAMBIO AUTOMÁTICO DE FOTOS
+====================================================== */
+
+function programarCambioAutomatico(tipo) {
+
+    const carrusel =
+        carruseles[tipo];
+
+
+    // Cancelar temporizador anterior
+
+    if (carrusel.temporizador) {
+
+        clearTimeout(
+            carrusel.temporizador
+        );
+
+    }
+
+
+    // Esperar 5 segundos
+
+    carrusel.temporizador =
+        setTimeout(
+            function() {
+
+                cambiarImagen(
+                    tipo,
+                    1
+                );
+
+            },
+            5000
+        );
+
+}
+
+    
+/* =====================================================
    MOSTRAR CARRUSEL
 ====================================================== */
 
@@ -1100,6 +1139,7 @@ function mostrarCarrusel(tipo) {
 
     const carrusel =
         carruseles[tipo];
+
 
     const elemento =
         document.getElementById(
@@ -1109,14 +1149,24 @@ function mostrarCarrusel(tipo) {
         );
 
 
-    // Eliminar imágenes y videos anteriores
+    // Detener videos anteriores
 
     elemento
-        .querySelectorAll(
-            ".archivo-github"
-        )
-        .forEach(
-            archivo => archivo.remove()
+        .querySelectorAll("video")
+        .forEach(video => {
+
+            video.pause();
+            video.currentTime = 0;
+
+        });
+
+
+    // Eliminar archivos anteriores
+
+    elemento
+        .querySelectorAll(".archivo-github")
+        .forEach(archivo =>
+            archivo.remove()
         );
 
 
@@ -1126,9 +1176,11 @@ function mostrarCarrusel(tipo) {
         );
 
 
-    // Si no existen archivos
+    // No hay archivos
 
-    if (carrusel.imagenes.length === 0) {
+    if (
+        carrusel.imagenes.length === 0
+    ) {
 
         mensaje.style.display = "flex";
 
@@ -1143,7 +1195,7 @@ function mostrarCarrusel(tipo) {
     mensaje.style.display = "none";
 
 
-    // Crear cada archivo
+    // Crear los archivos
 
     carrusel.imagenes.forEach(
         (archivo, indice) => {
@@ -1152,38 +1204,74 @@ function mostrarCarrusel(tipo) {
             let elementoMedia;
 
 
-            // =========================
-            // SI ES VIDEO
-            // =========================
+            /* =========================
+               VIDEO
+            ========================== */
 
             if (archivo.esVideo) {
 
                 elementoMedia =
                     document.createElement("video");
 
+
                 elementoMedia.src =
                     archivo.url;
 
+
                 elementoMedia.controls = true;
+
 
                 elementoMedia.playsInline = true;
 
-                elementoMedia.preload = "metadata";
+
+                elementoMedia.preload =
+                    "metadata";
+
+
+                /*
+                    Cuando el video termina,
+                    automáticamente pasa
+                    al siguiente archivo.
+                */
+
+                elementoMedia.addEventListener(
+                    "ended",
+                    function() {
+
+                        // Solo avanzar si este
+                        // sigue siendo el video activo
+
+                        if (
+                            carrusel.posicion ===
+                            indice
+                        ) {
+
+                            cambiarImagen(
+                                tipo,
+                                1
+                            );
+
+                        }
+
+                    }
+                );
 
             }
 
 
-            // =========================
-            // SI ES IMAGEN
-            // =========================
+            /* =========================
+               IMAGEN
+            ========================== */
 
             else {
 
                 elementoMedia =
                     document.createElement("img");
 
+
                 elementoMedia.src =
                     archivo.url;
+
 
                 elementoMedia.alt =
                     archivo.nombre;
@@ -1196,8 +1284,10 @@ function mostrarCarrusel(tipo) {
             );
 
 
-            // Mostrar solamente
-            // la imagen/video actual
+            /*
+                Mostrar solamente
+                el archivo actual.
+            */
 
             if (
                 indice ===
@@ -1211,12 +1301,16 @@ function mostrarCarrusel(tipo) {
             }
 
 
-            // Insertar antes de las flechas
+            /*
+                Insertar antes
+                de las flechas.
+            */
 
             const flecha =
                 elemento.querySelector(
                     ".anterior"
                 );
+
 
             elemento.insertBefore(
                 elementoMedia,
@@ -1226,10 +1320,74 @@ function mostrarCarrusel(tipo) {
         }
     );
 
+
+    /*
+        Si el archivo actual es una
+        imagen, programamos el cambio
+        automático de 5 segundos.
+    */
+
+    const archivoActual =
+        carrusel.imagenes[
+            carrusel.posicion
+        ];
+
+
+    if (
+        archivoActual &&
+        !archivoActual.esVideo
+    ) {
+
+        programarCambioAutomatico(
+            tipo
+        );
+
+    }
+
 }
 
 
 
+/* =====================================================
+   CAMBIO AUTOMÁTICO DE FOTOS
+====================================================== */
+
+function programarCambioAutomatico(tipo) {
+
+    const carrusel =
+        carruseles[tipo];
+
+
+    // Cancelar temporizador anterior
+
+    if (carrusel.temporizador) {
+
+        clearTimeout(
+            carrusel.temporizador
+        );
+
+    }
+
+
+    // Esperar 5 segundos
+
+    carrusel.temporizador =
+        setTimeout(
+            function() {
+
+                cambiarImagen(
+                    tipo,
+                    1
+                );
+
+            },
+            5000
+        );
+
+}
+
+
+    
 /* =====================================================
    CAMBIAR IMAGEN
 ====================================================== */
@@ -1238,16 +1396,32 @@ function cambiarImagen(tipo, direccion) {
 
     const carrusel = carruseles[tipo];
 
-    // Si no hay imágenes, no hacemos nada
     if (carrusel.imagenes.length === 0) {
         return;
     }
 
+    // Detener cualquier video que esté reproduciéndose
+    const contenedor =
+        document.getElementById(
+            tipo === "actual"
+                ? "carrusel-actual"
+                : "carrusel-finalizado"
+        );
+
+    const videos =
+        contenedor.querySelectorAll("video");
+
+    videos.forEach(video => {
+        video.pause();
+        video.currentTime = 0;
+    });
+
+
     // Cambiar posición
     carrusel.posicion += direccion;
 
-    // Si llegamos antes de la primera imagen,
-    // volvemos a la última
+
+    // Volver al último
     if (carrusel.posicion < 0) {
 
         carrusel.posicion =
@@ -1255,8 +1429,8 @@ function cambiarImagen(tipo, direccion) {
 
     }
 
-    // Si llegamos después de la última,
-    // volvemos a la primera
+
+    // Volver al primero
     if (
         carrusel.posicion >=
         carrusel.imagenes.length
@@ -1266,7 +1440,7 @@ function cambiarImagen(tipo, direccion) {
 
     }
 
-    // Mostrar la nueva imagen
+
     mostrarCarrusel(tipo);
 
 }
